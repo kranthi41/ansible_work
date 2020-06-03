@@ -1,0 +1,14 @@
+---
+ - name: find module
+   hosts: cogeco-prod
+   tasks: 
+   - name: using fine module delete files which are older than 5 days 
+     find: 
+       paths: /u02/netcracker/toms/temp/krbh0717
+       age: 7d 
+     register: files_to_delete
+   - name: Ansible remove files older than a date example
+     file:
+       path: "{{ item.path  }}"
+       state: absent
+     with_items: "{{ files_to_delete.files }}"

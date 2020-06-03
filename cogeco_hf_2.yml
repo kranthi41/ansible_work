@@ -1,0 +1,27 @@
+---
+ - name: This playbook is for applying HF cogeco prod env.
+   hosts: slave.server.com
+   gather_facts: false
+   vars: 
+     nc_home: /u02/netcracker/toms/cgtmp_7000
+   vars_prompt:
+    - name: HF_zip_file_name
+      prompt: Please enter HF ZIP file name 
+      private: no 
+    - name: HF_staged_path
+      prompt: Please enter HF staged path Example /u02/netcracker/toms/temp/krbh0717/HF-DARWIN.zip you have to provide full path as shown in example
+      private: no 
+   tasks:
+   - name: Copying zip to nc_home 
+     copy:
+      src: "{{HF_staged_path}}"
+      dest: "{{nc_home}}"
+      remote_src: yes 
+   - name: unzipping  "{{HF_zip_file_name}}" to "{{nc_home}}"
+     command: unzip -o "{{HF_staged_path}}"
+     args:
+      chdir: "{{nc_home}}"
+     register: output_of_zip_file 
+   - debug: var=output_of_zip_file
+
+      

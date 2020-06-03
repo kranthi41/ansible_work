@@ -1,0 +1,16 @@
+---
+ - name: this play book for checking read value from command prompt 
+   hosts: cogeco-prod 
+   gather_facts: false
+   vars:
+    x: 45 
+    name_of_your_project: cogeco
+   vars_prompt:
+    name: y
+    prompt: enther the value for y 
+   tasks: 
+   - debug:  
+      msg:
+       - "The valuse of x is: {{x}}"
+       - "Name of your project is: {{name_of_your_project}}"
+       - "The values of y is: {{y}}"

@@ -1,0 +1,21 @@
+---
+ - name: in this playbook i am testing vars_prmpt module 
+   hosts: cogeco-prod
+   gather_facts: false
+   vars_prompt:
+    name: y 
+    prompt: enter the direcotry name for y
+    private: no   
+   tasks: 
+   - name: createing a direcotry using prompt module 
+     file: 
+       path: /u02/netcracker/toms/temp/krbh0717/{{y}}
+       state: directory 
+       mode: 0777
+   - name: checking the created folder 
+     command: "ls -ltrh /u02/netcracker/toms/temp/krbh0717/"
+     register: listing
+   - set_fact:
+      list: "{{listing.stdout_lines[1:]}}"
+   - debug: var=list
+    

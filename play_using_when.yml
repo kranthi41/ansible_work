@@ -1,0 +1,17 @@
+---
+ - name: this play book is for when condition usage
+   hosts: cogeco-tst5
+   gather_facts: false
+   vars: 
+    x: 5
+    y: 67
+    my_list: [5,6,7]
+   tasks:
+    - debug:
+       msg:
+        - "The values of x is {{x}} and y values is {{y}}"
+      when: x == y
+    - debug:
+       msg:
+        - "The values of x in my_list"
+      when: x in my_list

@@ -1,0 +1,15 @@
+---
+ - name: testing zip archive module 
+   hosts: cogeco-prod
+   tasks:
+   - name: zipping krbh0717 folder 
+     archive:
+       path: /u02/netcracker/toms/temp/krbh0717/p*
+       dest: /u02/netcracker/toms/temp/krbh0717/p.zip
+       format: zip
+   - name: testing the above play 
+     command: 'ls -ltrh /u02/netcracker/toms/temp/krbh0717/'
+     register: listing
+   - debug: var=listing.stdout_lines
+     
+    

@@ -1,0 +1,29 @@
+---
+ - name: In this playbook we are going to install multiple packages using loops concept 
+   hosts: slave-server.com
+   gather_facts: false
+   become: yes
+   tasks: 
+   - name: writing loops to install packages 
+     yum: 
+      name: "{{item}}"
+      state: latest
+     loop:
+      - git
+      - tomcat
+      - httpd
+      - nginx
+      - htop
+      - iostat
+     notify:
+      - stating pacakges
+   handlers:
+   - name: stating pacakges
+     service: 
+       name: "{{item}}"
+       state: started
+     loop:
+      - git
+      - tomcat
+      - httpd
+      

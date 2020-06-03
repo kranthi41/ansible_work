@@ -1,0 +1,11 @@
+---
+ - name: This playbook is for checkng error handler
+   hosts: cogeco-tst5
+   gather_facts: false
+   tasks: 
+   - name: this playbook is for checking error handler
+     command: 'ls -ltrh  /u02/netcrakcer/toms/temp/prka0313/'
+     ignore_errors: yes
+   - name: this is another playbook for checking same 
+     debug:
+       msg: "this is kranhti how are u"

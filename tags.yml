@@ -1,0 +1,34 @@
+---
+ - name: this taks is for checking tags functionality 
+   hosts: cogeco-tst5
+   gather_facts: false
+   tasks:
+     - debug: 
+         msg: "this is the first task"
+       tags: 
+         - first
+         - common
+         - always 
+     - debug: 
+         msg: "this is the second task"
+       tags: 
+         - second
+         - never
+     - debug: 
+         msg: "this is the third task"
+       tags: 
+         - third
+         - common
+         - never
+     - debug: 
+         msg: "this is the fourth task"
+       tags: 
+         - fourth
+         - never
+     - debug: 
+         msg: "this is the fifth task"
+       tags:
+         - fifth
+         - never
+
+      

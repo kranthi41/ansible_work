@@ -1,0 +1,15 @@
+---
+ - name: this playbook is for extracting auto_installer logs from nc_home latest build 
+   hosts: cogeco-prod
+   gather_facts: false
+   tasks: 
+   - name: get the zip from auto_installer logs 
+     copy:
+       src: "{{log_path}}"
+       dest: /u02/netcracker/toms/temp/krbh0717/
+       remote_src: yes
+   - name: checking the zip file 
+     command: 'ls -ltrh /u02/netcracker/toms/temp/krbh0717/'
+     register: auto_log
+   - debug: var=auto_log
+    

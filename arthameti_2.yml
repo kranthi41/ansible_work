@@ -1,0 +1,19 @@
+---
+ - name: this is another  play book for arthametic operation using prompt input 
+   hosts: cogeco-prod
+   gather_facts: false
+   vars_prompt:
+    - name: x
+      prompt: please enter the values of x 
+      private: no
+    - name: y
+      prompt: please enter the vlaues of y 
+      private: no
+   vars:
+    a: 100
+   tasks:
+   - debug:
+      msg:
+      - "The addition of {{x}} and {{y}} is {{x|int + y|int}}"
+      - "The Multiplication of {{x}} and {{y}} is {{x|int * y|int}}"
+      - "The addition of a and y is  {{a + y|int}}"

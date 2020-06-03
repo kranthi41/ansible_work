@@ -1,0 +1,29 @@
+---
+ - name: This playbook is for testing dictoneirs in ansible
+   hosts: cogeco-tst5
+   gather_facts: false
+   vars:
+    hello:
+     - USA
+     - Asia
+     - Kenya
+     - Kerala
+     - Tamil Nadu 
+     - AP
+     - TG
+     - MH
+    Department:
+     Name: 'Kranthi'
+     Role: 'MSO'
+     Skills: 'Linux'
+   tasks:
+   - name: checking listing 
+     debug:
+      msg:
+       - "{{hello}}"
+       - "{{Department.Name}}"
+       - "{{Department.Role}}"
+       - "{{Department.Skills}}"
+       - "{{Department[ 'Skills' ]}}"
+       - "{{Department| dict2items}}"
+       

@@ -1,0 +1,25 @@
+---
+ - name: This playbook is for testing block,resuce,always error free paybook 
+   gather_facts: false
+   hosts: slave.server.com
+   tasks:
+   - name: checking blocking 
+     block:
+       - name: listing task 
+         command: "ls -ltrh /u02/netcracker/toms/billops-ui/fe_18001/static"
+         register: listing
+       - debug: var=listing
+       - name: listing second 
+         command: "ls -ltrh /home/ansible/red/"
+         register: listing_out 
+       - debug: var=listing_out
+     rescue:
+       - name: creating directory for above block if fails 
+         file: 
+           path: /home/ansible/red/
+           state: directory
+     always:
+       - debug: 
+           msg: "This task will alwyas execute"
+ 
+

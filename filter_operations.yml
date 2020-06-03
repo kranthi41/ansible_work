@@ -1,0 +1,20 @@
+---
+ - name: this playbook is for checking ansible filter
+   gather_facts: false
+   hosts: cogeco-tst5
+   vars:
+    x: "This FILTER MOdule to CHECK WitH ANsible Please MOre concentraCE FILEter in AnsibLe"
+    y: [100 , 10 , 10000, 100 , 1]
+    z: [100, 2, 4, 6, 8, 9]
+   tasks:
+   - debug:
+      msg:
+       - "{{ x|lower }}"
+       - "{{ x|upper }}"
+       - "{{ y|max }}"
+       - "{{ y|min }}"
+       - "{{ y| union(z) }}" 
+       - "{{ y|intersect(z) }}"
+       - "{{ y|difference(z) }}"
+       - "{{ y|symmetric_difference(z) }}"
+       

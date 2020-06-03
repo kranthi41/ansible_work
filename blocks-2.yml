@@ -1,0 +1,23 @@
+---
+ - name: This  playbook is for checking blocking concept 
+   hosts: slave.server.com
+   gather_facts: yes 
+   become: yes 
+   vars_prompt:
+    - name: x 
+      prompt: please enter the package name  
+      private: no
+   tasks:
+     - block:
+       - name: This taks is for installing httpd on "{{ansible_distribution}}"
+         yum:
+           name: "{{x}}" 
+           state: present
+       - name: This taks is for starting httpd 
+         service: 
+           name: "{{x}}"
+           state: started
+       ignore_errors: yes
+       when: ansible_distribution == "CentOS" 
+       
+ 

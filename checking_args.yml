@@ -1,0 +1,11 @@
+---
+ - name: Checking the args option in command option 
+   hosts: slave.server.com
+   gather_facts: false
+   tasks:
+   - name: listing the files 
+     command: ls -ltrh 
+     args:
+      chdir: /u02/netcracker/toms/temp
+     register: args_out
+   - debug: var=args_out  

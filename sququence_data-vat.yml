@@ -1,0 +1,20 @@
+---
+ - name: this play book is for learning variable first type is seuence data collections
+   hosts: cogeco-tst5 
+   gather_facts: false
+   vars:
+    cricket_players:
+    - SACHIN
+    - Dhoni: 36
+    - Rahul: 40
+    - rohith: 30
+    - Sehwag: 38
+   tasks:
+   - debug:
+      msg:
+       - "{{cricket_players}}" 
+       - "{{cricket_players[1:5]}}"
+       - "{{cricket_players[4].Sehwag}}"
+     
+    
+   

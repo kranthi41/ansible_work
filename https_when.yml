@@ -1,0 +1,17 @@
+---
+ - name: this play book is for installing httpd and apache2 package 
+   hosts: cogeco-tst5
+   gather_facts: true
+   tasks:
+   - name: this play book is for installaing some packages 
+     yum: 
+      name: httpd
+      state: present
+     when: ansible_distribution != ubuntu 
+   - name: this play is for installing apache2 in ubtunu server 
+     yum:
+      name: apache2
+      state: present
+     when: ansible_distribution == ubuntu  
+      
+       

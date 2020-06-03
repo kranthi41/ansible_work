@@ -1,0 +1,105 @@
+---
+ - name: This playbook is for installing NGINX along with it's dependcies and deploying FE bill for Billops
+   hosts: slave.server.com
+   gather_facts: false
+   vars: 
+     pcre_version: '8.40'
+     zlib_version: '1.2.11'
+     openssl_version: '1.1.0f'
+     nginx_version: '1.13.1'
+     nginx_url: "https://nginx.org/download/nginx-{{nginx_version}}.tar.gz"
+     pcre_url: "https://ftp.pcre.org/pub/pcre/pcre-{{pcre_version}}.tar.gz"
+     zlib_url: "http://www.zlib.net/zlib-{{zlib_version}}.tar.gz"
+     openssl_url: "https://www.openssl.org/source/openssl-{{openssl_version}}.tar.gz"
+     error_log_path: "/u01/app/nginx/logs/error.log"
+     nginx_pid: "/u01/app/nginx/logs/nginx.pid"
+     nginx_port: "18001"
+     host_name: "slave.server.com"
+     root_path: "/u02/netcracker/toms/billops-ui/fe_18001/static" 
+     access_logs: "/u01/app/nginx/logs/access.log"
+     nginx_home: "/u01/app/nginx/"
+     fe_home: "/u02/netcracker/toms/billops-ui/fe_18001/"
+   vars_prompt: 
+     - name: build_name
+       prompt: Please enter the FE build 
+       private: yes 
+ 
+   tasks:
+   - name: Downloading required tar files for NGINX, JLIB, OPENSSL, PCRE
+     shell: wget "{{ item }}" 
+     loop:
+      - "{{ nginx_url }}"
+      - "{{ pcre_url }}"
+      - "{{ zlib_url }}"
+      - "{{ openssl_url }}"  
+     register: nginx_download
+
+   - name: Extracting donwloaded softwares
+     unarchive: 
+       src: /home/ansible/{{ item }}.tar.gz
+       dest: /u02/netcracker/toms/temp/
+       remote_src: yes
+       owner: ansible 
+       group: ansible 
+     loop: 
+      - nginx-{{ nginx_version }}
+      - pcre-{{ pcre_version }}
+      - zlib-{{ zlib_version }}
+      - openssl-{{ openssl_version }}
+     when: nginx_download is changed
+     register: nginx_unarchive
+
+   - name: creating the direcotry for ngins_home 
+     become: yes
+     file: 
+       path: "{{ item }}" 
+       state: directory
+       owner: ansible 
+       group: ansible 
+       mode: 0755 
+     loop:
+      - /u01/app/nginx/
+      - /u02/netcracker/toms/billops-ui/fe_18001/
+
+   - name: Configuring nginx with source and cusotom commands
+     command: "./configure --prefix=/u01/app/nginx/  --with-openssl=/u02/netcracker/toms/temp/openssl-1.1.0f --with-openssl-opt=enable-ec_nistp_64_gcc_128 --with-openssl-opt=no-nextprotoneg --with-openssl-opt=no-weak-ssl-ciphers --with-openssl-opt=no-ssl3 --with-pcre=/u02/netcracker/toms/temp/pcre-8.40 --with-pcre-jit   --with-zlib=/u02/netcracker/toms/temp/zlib-1.2.11 --with-http_slice_module --with-http_ssl_module --with-http_sub_module --with-http_stub_status_module --with-http_v2_module --with-http_secure_link_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module"
+     args:
+      chdir: /u02/netcracker/toms/temp/nginx-1.13.1
+     when: nginx_unarchive is changed
+     register: nginx_configured
+ 
+   - name: Installing Nginx using make and Make install 
+     shell: make && make install
+     args:
+      chdir: /u02/netcracker/toms/temp/nginx-1.13.1
+     when: nginx_configured is changed
+   - name: Taking backup of Existing nginx.conf file backup 
+     copy:
+      src: /u01/app/nginx/conf/nginx.conf
+      dest: /u01/app/nginx/conf/nginx.conf_bkp 
+      remote_src: yes 
+     tags:
+      - taking_Bakcup 
+   - name: updating nginx.conf file 
+     template:
+       src: /home/ansible/playbooks/template/nginx.conf.j2
+       dest: /u01/app/nginx/conf/nginx.conf 
+   - name: Deploying FE TOOL
+     unarchive:
+      src: /u02/netcracker/toms/temp/{{build_name}} 
+      dest: "{{ fe_home }}"
+      remote_src: yes
+      owner: ansible
+      group: ansible 
+     register: Unarachive_fe_build
+   - name: Running install.sh 
+     command: sh install.sh
+     args: 
+       chdir: "{{ fe_home }}"
+     when: Unarachive_fe_build is changed 
+     register: fe_out
+   - name: Starting Nginx 
+     command: /u01/app/nginx/sbin/nginx
+   - debug: 
+       msg: "I Hope everythig will work please try to access Fe url using hostname and port as slave.server.com:18001 or 192.168.56.101:18001"  
+   

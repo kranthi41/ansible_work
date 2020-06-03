@@ -1,0 +1,21 @@
+---
+ - name: this play book is for arthametic operations 
+   hosts: cogeco-prod
+   gather_facts: false
+   vars:
+    x: 56
+    y: 34
+   tasks:
+   - debug:
+       msg:
+        - "The value of x is: {{x}}"
+        - "The value of y is: {{x}}"
+        - "{{x}} + {{y}} = {{x+y}}"
+        - "{{x}} - {{y}} = {{x-y}}"
+        - "{{x}} * {{y}} = {{x*y}}"
+        - "{{y}} - {{x}} = {{y-x}}"
+        - "x == y : {{ x == y }}"
+        - "x > y : {{ x > y }}"
+        - "x < y : {{ x < y }}"
+        - "x != y : {{ x != y }}"
+

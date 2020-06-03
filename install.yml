@@ -1,0 +1,10 @@
+---
+ - name: installing the packages 
+   hosts: slave.server.com
+   gather_facts: false
+   become: yes
+   tasks:
+   - name: installing the yum packges 
+     yum:
+      name: {{x}}
+      state: {{y}} 

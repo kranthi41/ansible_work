@@ -1,0 +1,16 @@
+---
+ - name: instaling httpd using handler 
+   hosts: slave.server.com
+   become: yes 
+   tasks: 
+   - name: installing httpd using yum package 
+     yum:
+      name: httpd
+      state: present 
+     register: output
+   - debug: var=output.changed
+   - name: starting installed httpd service 
+     service:
+       name: httpd
+       state: started
+     when: output.changed == True

@@ -1,0 +1,16 @@
+---
+ - name: this playbook is for testing inline (if else ) condition 
+   hosts: cogeco-tst5
+   gather_facts: false
+   vars:
+    larger: "{{ x if (x > y) else y }}"
+   vars_prompt:
+    - name: x
+      prompt: please enter the values of x 
+    - name: y 
+      prompt: please enter the values of y 
+   tasks:
+   - name: this play is for testing inline condition 
+     debug:
+      msg: 
+       - "The values of  {{x}} and the values of  {{y}} and among these largest number is: {{larger}}"

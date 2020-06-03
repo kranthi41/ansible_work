@@ -1,0 +1,22 @@
+---
+ - name: checking the variable using external file 
+   hosts: cogeco-prod
+   vars_files: 
+     - /home/ansible/variables/working_var_2.yml
+   gather_facts: false
+   tasks: 
+   - name: checking with remote files 
+     file: 
+       path: "{{ item.dire }}"
+       state: directory
+       mode: 0777 
+     with_items: 
+     - { dire: '/u02/netcracker/toms/temp/krbh0717/{{directory_name}}' }
+     - { dire: '/u02/netcracker/toms/temp/krbh0717/{{files_name}}' }
+   - name: checking the created files 
+     command: 'ls -ltrh /u02/netcracker/toms/temp/krbh0717/'
+     register: listing
+   - set_fact:
+      list_file: "{{listing.stdout.split('\n')[1]}}"
+   - debug: var=list_file
+    

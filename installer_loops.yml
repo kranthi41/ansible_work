@@ -1,0 +1,27 @@
+---
+ - name: This play book combination of loops and handler conecpt 
+   hosts: slave.server.com
+   gather_facts: false
+   become: yes 
+   tasks:
+   - name: Installing below listed packages
+     yum:
+       name: "{{item}}"
+       state: present
+     loop:
+      - httpd
+      - nginx
+      - htop
+      - iotop
+     ignore_errors: yes 
+     notify: 
+      - start process 
+   handlers:
+   - name: start process
+     service: 
+       name: "{{item}}"
+       state: started
+     loop:
+      - httpd
+      - nginx 
+       

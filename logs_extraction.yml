@@ -1,0 +1,8 @@
+---
+ - name: this playbook is for extracting logs from server after build installation 
+   gather_facts: false
+   hosts: slave.server.com
+   vars_prompt: 
+     - name: build_version
+       prompt: please enter the full build name it should be like this example 175_10.0.1.TOMS.Release2.37.Drop8_rev15733_autoinstaller
+       private: no

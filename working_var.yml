@@ -1,0 +1,15 @@
+---
+ - name: checkng variables 
+   hosts: cogeco-prod 
+   vars: 
+    x: 23
+    my_name: kranthi kumar B 
+    my_age: 29 
+    my_boolean: false
+   gather_facts: false
+   tasks:
+   - debug: 
+      msg: 
+       - "the value of x is: {{x}}"
+       - "my name is: {{my_name}}" 
+       - "my_age is: {{my_age}}"

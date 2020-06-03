@@ -1,0 +1,24 @@
+#!/usr/bin/ansible-playbook
+- name: creating temp direcotry for test run  
+  hosts: cogeco-prod 
+  tasks:
+  - name: creating sample direcotry using file moudle 
+    file: 
+      path: "{{ item.dest }}" 
+      state: directory 
+      mode:  "{{ item.mode }}"
+    with_items: 
+      - { dest: '/u02/netcracker/toms/temp/krbh0717/playb_1', mode: '777' }
+      - { dest: '/u02/netcracker/toms/temp/krbh0717/playb_2', mode: '777' }
+      - { dest: '/u02/netcracker/toms/temp/krbh0717/playb_2', mode: '777' }
+
+      
+  - name:  checking the created file 
+    command: 'ls -ltrh /u02/netcracker/toms/temp/krbh0717/'
+    register: listing
+  - set_fact: 
+     list_file: "{{ listing.stdout_lines[8] }}"
+  - debug: var=list_file
+   
+  
+ 

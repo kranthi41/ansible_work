@@ -1,0 +1,15 @@
+---
+ - name: checking packages using loops conecept 
+   hosts: cogeco-tst5
+   gather_facts: false
+   tasks:
+   - name: checking the oworking of loops conecpt 
+     debug:
+       msg: "displaying the vars using loops conect: {{item}} "
+     loop:
+      - git:
+      - tomact:
+      - karona:
+ 
+  
+    

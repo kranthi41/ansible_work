@@ -1,0 +1,25 @@
+---
+ - name: This playbook is for storing output in csv file
+   gather_facts: true
+   hosts: slave.server.com
+   tasks:
+   - name: Dipplaying uptime of the server 
+     shell: 'uptime'
+     register: up_time 
+   - name: Diplaying version of server
+     shell: 'uname'  
+     register: uname_out 
+   - debug:
+      msg: "{{inventory_hostname}} {{up_time.stdout.split(',')[0].split('up')[-1]}} {{uname_out.stdout}}, {{ansible_os_family}} , {{ansible_system}}"
+   - name: Removing old .csv files 
+     file:
+       dest: ./displau.csv
+       state: absent
+   - name:  creating new csv file for stroing above ouput 
+     copy:
+       dest: ./display.csv
+       content: "Server Name, UP_time, U-Name, OS_family, OS_system"
+   - name: Updating debug output to csv file
+     lineinfile:
+       path: ./display.csv
+       line: "{{inventory_hostname}} {{up_time.stdout.split(',')[0].split('up')[-1]}} {{uname_out.stdout}}, {{ansible_os_family}} , {{ansible_system}}"

@@ -1,0 +1,9 @@
+---
+ - name: checking the disk space 
+   hosts: slave.server.com 
+   gather_facts: false
+   tasks:
+   - name: checking disk space 
+     command: "df -TH"
+     register: space
+   - debug: var=space.cmd

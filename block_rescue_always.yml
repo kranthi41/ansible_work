@@ -1,0 +1,21 @@
+---
+ - name: This playbook is for checking Block, Rescue and Always section to handling efficent ways of handling error free palybook
+   gather_facts: false
+   hosts: slave.server.com 
+   vars:
+    debugging: true
+   tasks:
+     - block:
+         - name: first task 
+           debug: 
+             msg: "first task"
+         - name: set debugginf to false 
+           set_fact:
+             debugging: false
+         - name: second task 
+           debug:
+             msg: "second task"
+       when: debugging|bool
+      
+    
+  

@@ -1,0 +1,20 @@
+---
+ - name: this playbook is usgage of handler
+   hosts: slave.server.com
+   gather_facts: false
+   become: yes
+   tasks:
+   - name: this play is for installing httpd using yum module
+     yum:
+       name: httpd
+       state: present
+     register: output
+   - debug: var=output.rc
+     notify:
+       - start httpd
+   handlers:
+   - name: start httpd
+     service:
+       name: httpd
+       state: started   
+    

@@ -1,0 +1,21 @@
+---
+ - name: instaling httpd using handler 
+   hosts: slave.server.com
+   become: yes 
+   tasks: 
+   - name: installing httpd using yum package 
+     yum:
+      name: httpd
+      state: present 
+     notify:
+      - start httpd handler
+   handlers:
+   - name: start httpd handler 
+     service: 
+      name: httpd
+      state: started 
+
+
+
+
+

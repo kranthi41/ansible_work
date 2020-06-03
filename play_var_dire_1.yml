@@ -1,0 +1,21 @@
+---
+ - name: this playbooks is used to create a direcotry using variables 
+   hosts: cogeco-prod
+   gather_facts: false
+   vars: 
+    x: bimo1017
+    y: prka0313
+   tasks:
+    - name: create a directory using file module 
+      file:
+        path: "{{ item.path }}"
+        state: directory
+        mode: "{{ item.mode }}"
+      with_items:
+        - { path: '/u02/netcracker/toms/temp/krbh0717/{{x}}', mode: '0777' }
+        - { path: '/u02/netcracker/toms/temp/krbh0717/{{y}}', mode: '0777' }
+    - name: checking created files
+      command: 'ls -ltrh  /u02/netcracker/toms/temp/krbh0717/'
+      register: listing
+    - debug: var=listing.stdout_lines[9:]
+

@@ -1,0 +1,18 @@
+---
+ - name: In this play we are learning find module 
+   hosts: cogeco-prod 
+   gather_facts: no
+   tasks:
+   - name: listing the files which are having extn *.zip
+     find: 
+       paths: /u02/netcracker/toms/temp/krbh0717/
+       patterns: "*.zip"
+       age: "100d"
+       recurse: yes
+     register: files_to_delete 
+     files:
+       path: "{{ item.path }}"
+       state: absent
+     with_items: "{{ files_to_delete.files }}"   
+    
+

@@ -1,0 +1,20 @@
+---
+ - name: checking varibles 
+   hosts: cogeco-prod
+   gather_facts: false
+   vars: 
+    directory_name: ansible-master-server-23
+    file_name: ansible-master-server-2 
+   tasks: 
+   - name: creating direcotroy using variables
+     file:
+       path: "{{ item.dire }}" 
+       state: directory 
+       mode: 0777
+     with_items: 
+       - { dire: '/u02/netcracker/toms/temp/krbh0717/{{directory_name}}' }
+       - { dire: '/u02/netcracker/toms/temp/krbh0717/{{file_name}}' }
+   - name: checking creataed files 
+     command: 'ls -ltrh /u02/netcracker/toms/temp/krbh0717/'
+     register: listing
+   - debug: var=listing.stdout_lines  
